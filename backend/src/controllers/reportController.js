@@ -3,7 +3,8 @@ const XLSX = require('xlsx');
 
 const getFilteredReports = async (req, res) => {
   try {
-    const { startDate, endDate, city, status, service, page = 1, limit = 20 } = req.query;
+    const { startDate, endDate, city, status, service, page = 1 } = req.query;
+    const limit = Math.min(Number(req.query.limit) || 20, 100);
     const filter = buildFilter({ startDate, endDate, city, status, service });
 
     const total = await Lead.countDocuments(filter);

@@ -1,8 +1,11 @@
 const Lead = require('../models/Lead');
 
+const ALLOWED_FIELDS = ['name', 'mobile', 'email', 'city', 'service', 'budget', 'status', 'notes'];
+
 const getLeads = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, status, city, service } = req.query;
+    const { page = 1, search, status, city, service } = req.query;
+    const limit = Math.min(Number(req.query.limit) || 10, 100);
     const filter = {};
 
     if (search) {
@@ -62,7 +65,9 @@ const createLead = async (req, res) => {
 
 const updateLead = async (req, res) => {
   try {
-    const lead = await Lead.findByIdAndUpdate(req.params.id, req.body, {
+    const updates = {};
+    ALLOWED_FIELDS.forEach(f => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
+    const lead = await Lead.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true,
     });
