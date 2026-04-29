@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const BASE = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE,
   timeout: 10000,
 });
 
@@ -26,11 +28,11 @@ export const reportsApi = {
   getFiltered: (params) => api.get('/reports', { params }),
   exportXlsx: (params) => {
     const query = new URLSearchParams(params).toString();
-    window.open(`/api/reports/export/xlsx?${query}`, '_blank');
+    window.open(`${BASE}/reports/export/xlsx?${query}`, '_blank');
   },
   exportCsv: (params) => {
     const query = new URLSearchParams(params).toString();
-    window.open(`/api/reports/export/csv?${query}`, '_blank');
+    window.open(`${BASE}/reports/export/csv?${query}`, '_blank');
   },
 };
 
