@@ -53,6 +53,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </main>
 
